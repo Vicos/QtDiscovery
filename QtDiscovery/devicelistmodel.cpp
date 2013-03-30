@@ -3,14 +3,14 @@ Copyright (c) 2013, Florent V. <vicos51-at-gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+modification, are permitted provided that the following conditions are met: 
 
 1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
+   list of conditions and the following disclaimer. 
 2. Redistributions in binary form must reproduce the above copyright notice,
    this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
+   and/or other materials provided with the distribution. 
+   
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -23,21 +23,36 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include "devicelistmodel.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+DeviceListModel::DeviceListModel(QObject *parent) :
+    QAbstractListModel(parent)
 {
-    ui->setupUi(this);
-
-    Q_CHECK_PTR(ui->listView);
-    ui->listView->setModel(new DeviceListModel());
+    qDebug("DeviceListModel::Constructor called");
 }
 
-MainWindow::~MainWindow()
+Qt::ItemFlags DeviceListModel::flags(const QModelIndex &index) const
 {
-    delete ui;
+    // TODO implemente it
+    if (!index.isValid())
+        return (Qt::ItemIsEnabled);
+
+    return (QAbstractListModel::flags(index));
+}
+
+QVariant DeviceListModel::data(const QModelIndex &index,
+                               int role) const
+{
+    // TODO implemente it
+    if (index.isValid() && role == Qt::DisplayRole)
+        return (QVariant("Device #1"));
+
+    return (QVariant());
+}
+
+int DeviceListModel::rowCount(const QModelIndex &parent) const
+{
+    // TODO implemente it
+    Q_UNUSED(parent);
+    return (1);
 }

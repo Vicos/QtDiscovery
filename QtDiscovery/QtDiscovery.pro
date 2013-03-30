@@ -13,8 +13,10 @@ TARGET = QtDiscovery
 TEMPLATE = app
 
 SOURCES += mainwindow.cpp \
-           main.cpp
+           main.cpp \
+    devicelistmodel.cpp
 
-HEADERS += mainwindow.h
+HEADERS += mainwindow.h \
+    devicelistmodel.h
 
 FORMS   += mainwindow.ui

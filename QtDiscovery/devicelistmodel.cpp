@@ -25,12 +25,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "devicelistmodel.h"
 
+/** constructor **/
 DeviceListModel::DeviceListModel(QObject *parent) :
     QAbstractListModel(parent)
 {
-    qDebug("DeviceListModel::Constructor called");
 }
 
+/** get the corresponding flag of an item **/
 Qt::ItemFlags DeviceListModel::flags(const QModelIndex &index) const
 {
     // TODO implemente it
@@ -40,6 +41,7 @@ Qt::ItemFlags DeviceListModel::flags(const QModelIndex &index) const
     return (QAbstractListModel::flags(index));
 }
 
+/** get the value of an item **/
 QVariant DeviceListModel::data(const QModelIndex &index,
                                int role) const
 {
@@ -50,6 +52,7 @@ QVariant DeviceListModel::data(const QModelIndex &index,
     return (QVariant());
 }
 
+/** get the item number **/
 int DeviceListModel::rowCount(const QModelIndex &parent) const
 {
     // TODO implemente it

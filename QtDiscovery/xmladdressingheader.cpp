@@ -23,38 +23,9 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UDPLISTENER_H
-#define UDPLISTENER_H
+#include "xmladdressingheader.h"
 
-#include <QObject>
-#include <QNetworkInterface>
-#include <QHostAddress>
-#include <QUdpSocket>
-
-class UdpListener : public QObject
+XmlAddressingHeader::XmlAddressingHeader(QObject *parent) :
+    QObject(parent)
 {
-    Q_OBJECT
-public:
-    explicit UdpListener(QNetworkInterface networkInterface,
-                         QHostAddress interfaceAddress,
-                         QObject *parent = 0);
-    ~UdpListener();
-
-    void send(QByteArray data);
-    
-private:
-    static const QHostAddress IPV6_DISCOVERY_MCAST;
-    static const QHostAddress IPV4_DISCOVERY_MCAST;
-    static const int DISCOVERY_MCAST_PORT;
-
-    QNetworkInterface _netIf;
-    QHostAddress _ifAddr;
-    QUdpSocket _mSocket;
-
-signals:
-    
-public slots:
-    
-};
-
-#endif // UDPLISTENER_H
+}

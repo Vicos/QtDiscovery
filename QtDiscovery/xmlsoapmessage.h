@@ -23,33 +23,23 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UDPLISTENER_H
-#define UDPLISTENER_H
+#ifndef XMLSOAPMESSAGE_H
+#define XMLSOAPMESSAGE_H
 
 #include <QObject>
-#include <QNetworkInterface>
-#include <QHostAddress>
-#include <QUdpSocket>
+#include <QDomDocument>
+#include <QDomNode>
 
-class UdpListener : public QObject
+class XmlSoapMessage : public QObject
 {
     Q_OBJECT
 public:
-    explicit UdpListener(QNetworkInterface networkInterface,
-                         QHostAddress interfaceAddress,
-                         QObject *parent = 0);
-    ~UdpListener();
+    static const QString SOAP_NS;
 
-    void send(QByteArray data);
+public:
+    explicit XmlSoapMessage(QObject *parent = 0);
     
-private:
-    static const QHostAddress IPV6_DISCOVERY_MCAST;
-    static const QHostAddress IPV4_DISCOVERY_MCAST;
-    static const int DISCOVERY_MCAST_PORT;
-
-    QNetworkInterface _netIf;
-    QHostAddress _ifAddr;
-    QUdpSocket _mSocket;
+    QDomElement buildMessage(QDomDocument &doc, QDomElement header, QDomElement body);
 
 signals:
     
@@ -57,4 +47,4 @@ public slots:
     
 };
 
-#endif // UDPLISTENER_H
+#endif // XMLSOAPMESSAGE_H

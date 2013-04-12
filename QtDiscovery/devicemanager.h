@@ -45,11 +45,16 @@ private:
     DeviceList _deviceList;
     QList<UdpListener*> _listeners;
 
+private:
+    void sendMulticastMessage(QByteArray data);
+
 signals:
     
 public slots:
     void start();
     void stop();
+
+    void probe();
 
 };
 

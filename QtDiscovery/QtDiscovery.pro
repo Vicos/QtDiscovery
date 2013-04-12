@@ -3,6 +3,7 @@
 QT += core
 QT += gui
 QT += network
+QT += xml
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = QtDiscovery
@@ -16,7 +17,10 @@ SOURCES += mainwindow.cpp \
            device.cpp \
     devicemanager.cpp \
     udplistener.cpp \
-    devicecontroller.cpp
+    devicecontroller.cpp \
+    xmldiscoverymessage.cpp \
+    xmlsoapmessage.cpp \
+    xmladdressingheader.cpp
 
 HEADERS += mainwindow.h \
            devicelistmodel.h \
@@ -24,7 +28,10 @@ HEADERS += mainwindow.h \
            device.h \
     devicemanager.h \
     udplistener.h \
-    devicecontroller.h
+    devicecontroller.h \
+    xmldiscoverymessage.h \
+    xmlsoapmessage.h \
+    xmladdressingheader.h
 
 FORMS   += mainwindow.ui
 

@@ -23,38 +23,27 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UDPLISTENER_H
-#define UDPLISTENER_H
+#include "xmlsoapmessage.h"
 
-#include <QObject>
-#include <QNetworkInterface>
-#include <QHostAddress>
-#include <QUdpSocket>
+const QString XmlSoapMessage::SOAP_NS = "http://www.w3.org/2003/05/soap-envelope";
 
-class UdpListener : public QObject
+XmlSoapMessage::XmlSoapMessage(QObject *parent) :
+    QObject(parent)
 {
-    Q_OBJECT
-public:
-    explicit UdpListener(QNetworkInterface networkInterface,
-                         QHostAddress interfaceAddress,
-                         QObject *parent = 0);
-    ~UdpListener();
+}
 
-    void send(QByteArray data);
-    
-private:
-    static const QHostAddress IPV6_DISCOVERY_MCAST;
-    static const QHostAddress IPV4_DISCOVERY_MCAST;
-    static const int DISCOVERY_MCAST_PORT;
+QDomElement XmlSoapMessage::buildMessage(QDomDocument &doc,
+                                         QDomElement header,
+                                         QDomElement body)
+{
+    QDomElement envelopeElm = doc.createElementNS(SOAP_NS, "soap:Envelope");
+    QDomElement headerElm = doc.createElement("soap:Header");
+    QDomElement bodyElm = doc.createElement("soap:Body");
 
-    QNetworkInterface _netIf;
-    QHostAddress _ifAddr;
-    QUdpSocket _mSocket;
+    headerElm.appendChild(header);
+    bodyElm.appendChild(body);
+    envelopeElm.appendChild(headerElm);
+    envelopeElm.appendChild(bodyElm);
 
-signals:
-    
-public slots:
-    
-};
-
-#endif // UDPLISTENER_H
+    return(envelopeElm);
+}

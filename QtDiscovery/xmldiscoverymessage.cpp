@@ -23,38 +23,44 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef UDPLISTENER_H
-#define UDPLISTENER_H
+#include "xmldiscoverymessage.h"
+#include "xmladdressingheader.h"
+#include "xmlsoapmessage.h"
 
-#include <QObject>
-#include <QNetworkInterface>
-#include <QHostAddress>
-#include <QUdpSocket>
+const QString XmlDiscoveryMessage::DISC_NS = "http://schemas.xmlsoap.org/ws/2005/04/discovery";
 
-class UdpListener : public QObject
+XmlDiscoveryMessage::XmlDiscoveryMessage(MessageType type, QObject *parent) :
+    QObject(parent),
+    _msgType(type)
 {
-    Q_OBJECT
-public:
-    explicit UdpListener(QNetworkInterface networkInterface,
-                         QHostAddress interfaceAddress,
-                         QObject *parent = 0);
-    ~UdpListener();
+}
 
-    void send(QByteArray data);
-    
-private:
-    static const QHostAddress IPV6_DISCOVERY_MCAST;
-    static const QHostAddress IPV4_DISCOVERY_MCAST;
-    static const int DISCOVERY_MCAST_PORT;
+QDomElement XmlDiscoveryMessage::buildMessage(QDomDocument &doc)
+{
+    XmlSoapMessage xmlSoap;
+    XmlAddressingHeader xmlAddr;
 
-    QNetworkInterface _netIf;
-    QHostAddress _ifAddr;
-    QUdpSocket _mSocket;
+    QDomElement discoveryElm;
+    switch(_msgType)
+    {
+        case PROBE_MSG:
+            discoveryElm = doc.createElementNS(DISC_NS, "Probe");
+            break;
+        default:
+            break;
+    }
 
-signals:
-    
-public slots:
-    
-};
+    QDomElement addrElm = doc.createElement("TODO");
+    QDomElement soapElm = xmlSoap.buildMessage(doc, addrElm, discoveryElm);
 
-#endif // UDPLISTENER_H
+    return(soapElm);
+}
+
+QByteArray XmlDiscoveryMessage::buildMessage()
+{
+    QDomDocument doc;
+    QDomElement msg = buildMessage(doc);
+    doc.appendChild(msg);
+
+    return(doc.toByteArray(0));
+}

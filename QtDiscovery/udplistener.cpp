@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 const QHostAddress UdpListener::IPV6_DISCOVERY_MCAST("ff02::c");
 const QHostAddress UdpListener::IPV4_DISCOVERY_MCAST("239.255.255.250");
+const int UdpListener::DISCOVERY_MCAST_PORT = 3702;
 
 UdpListener::UdpListener(QNetworkInterface networkInterface,
                          QHostAddress interfaceAddress,
@@ -65,4 +66,18 @@ UdpListener::~UdpListener()
     _mSocket.close();
 
     qDebug() << "UDP listener stop to listen from " << _ifAddr.toString();
+}
+
+void UdpListener::send(QByteArray data)
+{
+    // TODO manage error on writeDatagram
+
+    if(_ifAddr.protocol() == QAbstractSocket::IPv6Protocol)
+    {
+        _mSocket.writeDatagram(data, IPV6_DISCOVERY_MCAST, DISCOVERY_MCAST_PORT);
+    }
+    else if (_ifAddr.protocol() == QAbstractSocket::IPv4Protocol)
+    {
+        _mSocket.writeDatagram(data, IPV4_DISCOVERY_MCAST, DISCOVERY_MCAST_PORT);
+    }
 }

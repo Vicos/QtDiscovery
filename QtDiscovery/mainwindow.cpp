@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "devicelistmodel.h"
+#include "devicemanager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -36,6 +37,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     Q_CHECK_PTR(ui->listView);
     ui->listView->setModel(new DeviceListModel());
+
+    DeviceManager *devManager = _deviceController->getManager();
+    Q_ASSERT(devManager != NULL);
+
+    connect(ui->actionDiscover, &QAction::triggered,
+            devManager, &DeviceManager::probe);
 }
 
 MainWindow::~MainWindow()

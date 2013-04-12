@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QNetworkInterface>
 
 #include "devicemanager.h"
+#include "xmldiscoverymessage.h"
 
 DeviceManager::DeviceManager(QObject *parent) :
     QObject(parent),
@@ -37,6 +38,14 @@ DeviceManager::DeviceManager(QObject *parent) :
 DeviceManager::~DeviceManager()
 {
     stop();
+}
+
+void DeviceManager::sendMulticastMessage(QByteArray data)
+{
+    foreach(UdpListener *listener, _listeners)
+    {
+        listener->send(data);
+    }
 }
 
 void DeviceManager::start()
@@ -63,3 +72,15 @@ void DeviceManager::stop()
 
     qDebug("DeviceManager stoped");
 }
+
+void DeviceManager::probe()
+{
+    XmlDiscoveryMessage probe(XmlDiscoveryMessage::PROBE_MSG);
+    QByteArray probeData = probe.buildMessage();
+    if(!probeData.isEmpty())
+    {
+        sendMulticastMessage(probeData);
+    }
+}
+
+

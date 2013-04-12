@@ -28,6 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <QMainWindow>
 
+#include "devicecontroller.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -42,6 +44,7 @@ public:
     
 private:
     Ui::MainWindow *ui;
+    DeviceController *_deviceController;
 };
 
 #endif // MAINWINDOW_H
